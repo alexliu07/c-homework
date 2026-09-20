@@ -13,14 +13,28 @@
     "*.h": "c"
   },
   "search.exclude": {
-    "**/build": true
+    "**/build": true,
+    "**/.cache": true
   },
   "files.watcherExclude": {
-    "**/build/**": true
+    "**/build/**": true,
+    "**/.cache/**": true
   },
   "terminal.integrated.cwd": "${workspaceFolder}",
-  "C_Cpp.default.cStandard": "c11",
-  "C_Cpp.default.compilerPath": "/usr/bin/gcc",
-  "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
-  "C_Cpp.errorSquiggles": "enabled"
+  "clangd.arguments": [
+    "--background-index",
+    "--clang-tidy",
+    "--completion-style=detailed",
+    "--header-insertion=never",
+    "--all-scopes-completion",
+    "--pch-storage=memory",
+    "--log=error",
+    "--pretty"
+  ],
+  "clangd.onConfigChanged": "restart",
+  "clangd.detectExtensionConflicts": true,
+  "[c]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+    "editor.formatOnSave": false
+  }
 }

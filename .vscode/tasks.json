@@ -4,29 +4,30 @@
     {
       "label": "gcc: 编译当前文件",
       "type": "shell",
-      "command": "gcc",
-      "args": [
-        "-std=c11",
-        "-Wall",
-        "-Wextra",
-        "-Wpedantic",
-        "-g",
-        "-O0",
-        "-o",
-        "${workspaceFolder}/build/${fileBasenameNoExtension}",
-        "${file}"
-      ],
+      "command": "mkdir -p \"${workspaceFolder}/build\" && gcc -std=c11 -Wall -Wextra -Wpedantic -g -O0 -o \"${workspaceFolder}/build/${fileBasenameNoExtension}\" \"${file}\" -lm",
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "problemMatcher": [
-        "$gcc"
-      ],
+      "problemMatcher": {
+        "owner": "c",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "^(.*?):(\\d+):(\\d+):\\s+(error|warning):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      },
       "group": {
         "kind": "build",
         "isDefault": true
       },
-      "detail": "编译当前打开的 .c 文件（一般在 programs/ 下），产物在 build/<文件名>"
+      "detail": "先建好 build/ 再编译当前文件，产物 build/<文件名>；末尾 -lm 支持 math.h；不依赖任何扩展的 problem matcher"
     },
     {
       "label": "gcc: 编译并运行当前文件",
@@ -55,9 +56,21 @@
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "problemMatcher": [
-        "$gcc"
-      ],
+      "problemMatcher": {
+        "owner": "c",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "^(.*?):(\\d+):(\\d+):\\s+(error|warning):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      },
       "group": "build",
       "detail": "编译 programs/ 下所有 .c 到 build/"
     },
