@@ -26,7 +26,7 @@
         "kind": "build",
         "isDefault": true
       },
-      "detail": "编译当前打开的 .c 文件，产物在 build/<文件名>"
+      "detail": "编译当前打开的 .c 文件（一般在 programs/ 下），产物在 build/<文件名>"
     },
     {
       "label": "gcc: 编译并运行当前文件",
@@ -59,7 +59,7 @@
         "$gcc"
       ],
       "group": "build",
-      "detail": "编译仓库根目录下所有 .c 到 build/"
+      "detail": "编译 programs/ 下所有 .c 到 build/"
     },
     {
       "label": "make: 清理 build 目录",
@@ -85,7 +85,7 @@
         "cwd": "${workspaceFolder}"
       },
       "problemMatcher": [],
-      "detail": "交互式新建一个 hwXX.c"
+      "detail": "交互式新建 programs/hwXX.c"
     }
   ],
   "inputs": [

@@ -1,5 +1,5 @@
 /*
- * __HW_NAME__ - 大学 C 语言作业
+ * __HW_NAME__ - 大学 C 语言作业（programs/__HW_NAME__.c）
  *
  * 题目：
  *   在这里写题目描述

@@ -1,5 +1,5 @@
-# 大学 C 语言作业 - 批量编译（单文件布局）
-#   make                 编译根目录下所有 .c 到 build/
+# 大学 C 语言作业 - 批量编译（作业 = programs/ 下的一层单文件）
+#   make                 编译 programs/ 下所有 .c 到 build/
 #   make run HW=hw01     编译并运行 hw01（不带 .c 后缀）
 #   make list            列出所有产物
 #   make clean           删除 build/
@@ -7,15 +7,15 @@
 CC      ?= gcc
 CFLAGS  ?= -std=c11 -Wall -Wextra -Wpedantic -g -O0
 BUILD   := build
-SRCS    := $(wildcard *.c)
-TARGETS := $(addprefix $(BUILD)/,$(SRCS:.c=))
+SRCS    := $(wildcard programs/*.c)
+TARGETS := $(addprefix $(BUILD)/,$(notdir $(SRCS:.c=)))
 
 .PHONY: all run list help clean
 
 all: $(TARGETS)
 	@echo "编译完成：$(words $(TARGETS)) 个文件 -> $(BUILD)/"
 
-$(BUILD)/%: %.c
+$(BUILD)/%: programs/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -o $@ $<
 

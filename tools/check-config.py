@@ -5,9 +5,9 @@
   1. .vscode 下所有 .json 可解析
   2. 任务 label 唯一；launch.json 的 preLaunchTask 都能在 tasks.json 找到
   3. launch.json 的 program 与编译任务的 -o 输出是同一个路径模板
-  4. 该输出目录与 Makefile 的 BUILD 目录一致
+  4. 该输出目录与 Makefile 的 BUILD 目录一致，Makefile 从 programs/*.c 取源
   5. compilerPath / miDebuggerPath / gdb 是否可用
-  6. 单文件布局：仓库根目录有 .c，且没有把作业塞进子目录
+  6. 布局：作业是 programs/ 下的一层 .c 文件，没有子目录
   7. 必备文件齐全
 """
 from __future__ import annotations
@@ -20,6 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 VSCODE = ROOT / ".vscode"
+PROGRAMS = ROOT / "programs"
 errors: list[str] = []
 notes: list[str] = []
 
@@ -83,15 +84,16 @@ def main() -> int:
             if need not in flags:
                 notes.append(f"编译任务未使用 {need}（调试/规范性会受影响）")
 
-    # Makefile 的 BUILD 目录要和 VS Code 产物目录一致
     mk = (ROOT / "Makefile").read_text(encoding="utf-8") if (ROOT / "Makefile").exists() else ""
     m = re.search(r"^BUILD\s*:?=\s*(\S+)", mk, re.M)
     if not m:
         errors.append("Makefile 中找不到 BUILD 变量")
-    else:
-        build_dir = m.group(1)
-        if build_dir != "build":
-            errors.append(f"Makefile 的 BUILD={build_dir}，与 .vscode 约定的 build/ 不一致")
+    elif m.group(1) != "build":
+        errors.append(f"Makefile 的 BUILD={m.group(1)}，与 .vscode 约定的 build/ 不一致")
+    if "programs/*.c" not in mk:
+        errors.append("Makefile 未从 programs/*.c 收集源文件")
+    if "notdir" not in mk:
+        notes.append("Makefile 未用 $(notdir ...)，build/ 里可能带上源目录层级，与 .vscode 的 build/<文件名> 不一致")
 
     cfg0 = props.get("configurations", [{}])[0]
     compiler = cfg0.get("compilerPath")
@@ -103,19 +105,28 @@ def main() -> int:
     if "ms-vscode.cpptools" not in exts.get("recommendations", []):
         errors.append("extensions.json 未推荐 ms-vscode.cpptools（调试依赖它）")
 
-    # 单文件布局检查
-    root_c = sorted(p.name for p in ROOT.glob("*.c"))
-    if not root_c:
-        notes.append("根目录还没有 .c 作业文件，用 ./newhw.sh hw01 建一个")
-    nested = [str(p.relative_to(ROOT)) for p in ROOT.rglob("*.c") if p.parent != ROOT and "templates" not in p.parts and "build" not in p.parts]
-    if nested:
-        notes.append(f"发现不在根目录的 .c: {nested}（单文件布局下作业应直接放根目录）")
+    if not PROGRAMS.is_dir():
+        errors.append("缺少 programs/ 目录")
+    else:
+        subdirs = [str(p.relative_to(ROOT)) for p in PROGRAMS.rglob("*") if p.is_dir()]
+        if subdirs:
+            notes.append(f"programs/ 下出现子目录: {subdirs}（约定是单层 .c 文件）")
+        hw = sorted(p.name for p in PROGRAMS.glob("*.c"))
+        print(f"programs/ 下作业文件: {', '.join(hw) if hw else '（无）'}")
+        if not hw:
+            notes.append("programs/ 下还没有 .c 文件，用 ./newhw.sh hw01 建一个")
+    stray = [
+        str(p.relative_to(ROOT))
+        for p in ROOT.rglob("*.c")
+        if p.parent != PROGRAMS and "templates" not in p.parts and "build" not in p.parts
+    ]
+    if stray:
+        notes.append(f"发现不在 programs/ 下的 .c: {stray}")
 
     for must in ("README.md", "Makefile", "templates/main.c", "newhw.sh", "tools/check-config.py"):
         if not (ROOT / must).exists():
             errors.append(f"缺少文件: {must}")
 
-    print(f"根目录作业文件: {', '.join(root_c) if root_c else '（无）'}")
     return report()
 
 
