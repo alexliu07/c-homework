@@ -9,6 +9,10 @@ build/
 a.out
 *.dSYM/
 
+# clangd 的索引缓存与编译数据库（本机生成物）
+.cache/
+compile_commands.json
+
 # VS Code 缓存
 .vscode/ipch/
 .vscode/*.log

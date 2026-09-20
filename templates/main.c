@@ -5,7 +5,7 @@
  *   在这里写题目描述
  *
  * 用法：
- *   Ctrl+Shift+B 编译当前文件（产物 build/__HW_NAME__），F5 进入 gdb 调试。
+ *   Ctrl+Shift+B 编译当前文件（产物 build/__HW_NAME__），F5 进入调试（CodeLLDB）。
  */
 
 #include <stdio.h>
