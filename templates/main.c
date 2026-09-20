@@ -4,8 +4,8 @@
  * 题目：
  *   在这里写题目描述
  *
- * 说明：
- *   按 Ctrl+Shift+B 编译当前文件，按 F5 进入 gdb 调试。
+ * 用法：
+ *   Ctrl+Shift+B 编译当前文件（产物 build/__HW_NAME__），F5 进入 gdb 调试。
  */
 
 #include <stdio.h>

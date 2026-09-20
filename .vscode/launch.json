@@ -5,7 +5,7 @@
       "name": "调试当前 C 文件 (gcc + gdb)",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/${relativeFileDirname}/${fileBasenameNoExtension}",
+      "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
@@ -25,34 +25,6 @@
           "ignoreFailures": true
         }
       ]
-    },
-    {
-      "name": "调试当前作业 (make 编译整个仓库)",
-      "type": "cppdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/build/homework/${input:hwNameForDebug}/main",
-      "args": [],
-      "stopAtEntry": false,
-      "cwd": "${workspaceFolder}/homework/${input:hwNameForDebug}",
-      "environment": [],
-      "externalConsole": false,
-      "MIMode": "gdb",
-      "preLaunchTask": "make: 编译整个仓库",
-      "setupCommands": [
-        {
-          "description": "为 gdb 启用整齐打印",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        }
-      ]
-    }
-  ],
-  "inputs": [
-    {
-      "id": "hwNameForDebug",
-      "type": "promptString",
-      "description": "要调试的作业目录名（homework/ 下），例如 hw01",
-      "default": "hw01"
     }
   ]
 }

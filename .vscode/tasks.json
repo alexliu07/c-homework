@@ -13,7 +13,7 @@
         "-g",
         "-O0",
         "-o",
-        "${workspaceFolder}/build/${relativeFileDirname}/${fileBasenameNoExtension}",
+        "${workspaceFolder}/build/${fileBasenameNoExtension}",
         "${file}"
       ],
       "options": {
@@ -26,12 +26,12 @@
         "kind": "build",
         "isDefault": true
       },
-      "detail": "编译当前打开的 .c 文件，产物在 build/<相对路径>/<文件名>"
+      "detail": "编译当前打开的 .c 文件，产物在 build/<文件名>"
     },
     {
       "label": "gcc: 编译并运行当前文件",
       "type": "process",
-      "command": "${workspaceFolder}/build/${relativeFileDirname}/${fileBasenameNoExtension}",
+      "command": "${workspaceFolder}/build/${fileBasenameNoExtension}",
       "args": [],
       "options": {
         "cwd": "${fileDirname}"
@@ -43,10 +43,10 @@
         "panel": "shared",
         "clear": true
       },
-      "detail": "先编译当前文件，再在终端里运行它（可以在终端里输入数据）"
+      "detail": "先编译当前文件，再在终端里运行它（可以在终端输入数据）"
     },
     {
-      "label": "make: 编译整个仓库",
+      "label": "make: 编译全部作业",
       "type": "shell",
       "command": "make",
       "args": [
@@ -59,7 +59,7 @@
         "$gcc"
       ],
       "group": "build",
-      "detail": "编译 homework/ 下所有作业，每次作业链接成一个可执行文件"
+      "detail": "编译仓库根目录下所有 .c 到 build/"
     },
     {
       "label": "make: 清理 build 目录",
@@ -85,14 +85,14 @@
         "cwd": "${workspaceFolder}"
       },
       "problemMatcher": [],
-      "detail": "交互式新建一次作业的目录与文件"
+      "detail": "交互式新建一个 hwXX.c"
     }
   ],
   "inputs": [
     {
       "id": "hwName",
       "type": "promptString",
-      "description": "作业名，例如 hw03",
+      "description": "作业名，例如 hw02",
       "default": "hw02"
     }
   ]

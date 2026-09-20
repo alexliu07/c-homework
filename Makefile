@@ -1,40 +1,34 @@
-# 大学 C 语言作业 - 一键编译
-#   make                 编译 homework/ 下所有作业
-#   make run HW=hw01     编译并运行某次作业
-#   make list            列出产物
+# 大学 C 语言作业 - 批量编译（单文件布局）
+#   make                 编译根目录下所有 .c 到 build/
+#   make run HW=hw01     编译并运行 hw01（不带 .c 后缀）
+#   make list            列出所有产物
 #   make clean           删除 build/
 
 CC      ?= gcc
 CFLAGS  ?= -std=c11 -Wall -Wextra -Wpedantic -g -O0
 BUILD   := build
-HW_DIRS := $(sort $(dir $(wildcard homework/*/*.c)))
-HW_DIRS := $(patsubst %/,%,$(HW_DIRS))
-TARGETS := $(addprefix $(BUILD)/,$(addsuffix /main,$(HW_DIRS)))
+SRCS    := $(wildcard *.c)
+TARGETS := $(addprefix $(BUILD)/,$(SRCS:.c=))
 
-.PHONY: all run list clean help
+.PHONY: all run list help clean
 
 all: $(TARGETS)
-	@echo "编译完成：$(words $(TARGETS)) 个目标 -> $(BUILD)/"
+	@echo "编译完成：$(words $(TARGETS)) 个文件 -> $(BUILD)/"
 
-# 每次作业的所有 .c 一起链接成一个可执行文件（要求其中有一个 main 函数）
-define HW_RULE
-$(BUILD)/$(1)/main: $$(wildcard $(1)/*.c)
-	@mkdir -p $$(dir $$@)
-	$$(CC) $$(CFLAGS) -o $$@ $$^
-endef
-$(foreach d,$(HW_DIRS),$(eval $(call HW_RULE,$(d))))
+$(BUILD)/%: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -o $@ $<
 
 run:
-	@test -n "$(HW)" || { echo "用法: make run HW=hw01"; exit 1; }
-	@bin="$(BUILD)/homework/$(HW)/main"; \
-	 test -f "$$bin" || { echo "未找到 $$bin，先跑一次 make 或检查 homework/$(HW)"; exit 1; }; \
-	 echo "== 运行 $$bin =="; exec "$$bin"
+	@test -n "$(HW)" || { echo "用法: make run HW=hw01（不带 .c 后缀）"; exit 1; }
+	@$(MAKE) --no-print-directory $(BUILD)/$(HW)
+	@echo "== 运行 $(BUILD)/$(HW) =="; exec "$(BUILD)/$(HW)"
 
 list:
 	@for t in $(TARGETS); do echo $$t; done
 
 help:
-	@sed -n '2,6p' Makefile
+	@sed -n '2,5p' Makefile
 
 clean:
 	@rm -rf $(BUILD)
