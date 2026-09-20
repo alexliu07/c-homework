@@ -1,0 +1,99 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "gcc: 编译当前文件",
+      "type": "shell",
+      "command": "gcc",
+      "args": [
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-g",
+        "-O0",
+        "-o",
+        "${workspaceFolder}/build/${relativeFileDirname}/${fileBasenameNoExtension}",
+        "${file}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "编译当前打开的 .c 文件，产物在 build/<相对路径>/<文件名>"
+    },
+    {
+      "label": "gcc: 编译并运行当前文件",
+      "type": "process",
+      "command": "${workspaceFolder}/build/${relativeFileDirname}/${fileBasenameNoExtension}",
+      "args": [],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "dependsOn": "gcc: 编译当前文件",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "detail": "先编译当前文件，再在终端里运行它（可以在终端里输入数据）"
+    },
+    {
+      "label": "make: 编译整个仓库",
+      "type": "shell",
+      "command": "make",
+      "args": [
+        "all"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": "build",
+      "detail": "编译 homework/ 下所有作业，每次作业链接成一个可执行文件"
+    },
+    {
+      "label": "make: 清理 build 目录",
+      "type": "shell",
+      "command": "make",
+      "args": [
+        "clean"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "detail": "删除 build/"
+    },
+    {
+      "label": "新建作业 (newhw.sh)",
+      "type": "shell",
+      "command": "${workspaceFolder}/newhw.sh",
+      "args": [
+        "${input:hwName}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "detail": "交互式新建一次作业的目录与文件"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "hwName",
+      "type": "promptString",
+      "description": "作业名，例如 hw03",
+      "default": "hw02"
+    }
+  ]
+}
