@@ -1,0 +1,20 @@
+# 编译产物
+build/
+*.o
+*.obj
+*.a
+*.so
+*.exe
+*.out
+a.out
+*.dSYM/
+
+# VS Code 缓存
+.vscode/ipch/
+.vscode/*.log
+
+# 系统 / 编辑器杂项
+.DS_Store
+Thumbs.db
+*.swp
+*~
