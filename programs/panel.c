@@ -6,7 +6,7 @@ int main() {
     scanf("%lld", &w);
     scanf("\n");
     for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 51; j++) {
+        for (int j = 0; j < 100; j++) {
             scanf("%c", &datas[i][j]);
             if (datas[i][j] == ',' || datas[i][j] == '\n') {
                 datas[i][j] = 0;
