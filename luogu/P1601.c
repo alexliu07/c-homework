@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <string.h>
 #define N 501
+int max(int a, int b) { return a > b ? a : b; }
 int plus(int a[], int b[], int r[], int n, int m) {
     int i = 0, t;
     while (i < n || i < m) {
@@ -8,30 +10,26 @@ int plus(int a[], int b[], int r[], int n, int m) {
         r[i + 1] += t / 10;
         i++;
     }
-    return i + 1;
+    return max(n, m) + 1;
 }
 int main() {
-    int n = 0, m = 0, x[N] = {0}, y[N] = {0}, r[N] = {0};
+    int x[N] = {0}, y[N] = {0}, r[N] = {0};
     char a[N], b[N];
-    while (1) {
-        scanf("%c", &a[n]);
-        if (a[n] == 0 || a[n] == '\n')
-            break;
-        n++;
-    }
-    while (1) {
-        scanf("%c", &b[m]);
-        if (b[m] == 0 || b[m] == '\n')
-            break;
-        m++;
-    }
+    scanf("%s", a);
+    scanf("%s", b);
+    int n = strlen(a), m = strlen(b);
     for (int i = 0; i < n; i++)
         x[n - i - 1] = a[i] - 48;
     for (int i = 0; i < m; i++)
         y[m - i - 1] = b[i] - 48;
     int k = plus(x, y, r, n, m);
+    int flag = 1;
     for (int i = k - 1; i >= 0; i--) {
-        if (i == k - 1 && r[i] == 0)
+        if (i == 0)
+            flag = 0;
+        if (r[i] != 0)
+            flag = 0;
+        if (flag && r[i] == 0)
             continue;
         printf("%d", r[i]);
     }
