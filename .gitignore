@@ -6,7 +6,6 @@ build/
 *.so
 *.exe
 *.out
-a.out
 *.dSYM/
 
 # clangd 的索引缓存与编译数据库（本机生成物）

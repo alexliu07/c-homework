@@ -1,3 +1,4 @@
+// 本题无英文名，标题为a + b problem EX
 #include <stdio.h>
 #include <string.h>
 #define max(a, b) ((a) > (b) ? (a) : (b))
