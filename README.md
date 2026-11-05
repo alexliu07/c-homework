@@ -1,8 +1,10 @@
 # 大学 C 语言作业仓库
 
 每次 C 语言作业都是一个**单文件**，统一放在 `programs/` 目录下（不套子文件夹），例如
-`programs/equation.c`。编辑器配置都在 `.vscode/` 里（随仓库提交）：语言服务用 **clangd**，
-调试用 **CodeLLDB**，编译/运行有 VS Code 任务和 Makefile。
+`programs/equation.c`。语言服务用 **clangd**，调试用 **CodeLLDB**，编译/运行有 VS Code 任务和 Makefile。
+
+> `.vscode/`（编译任务、F5 调试配置、clangd 参数）已被 `.gitignore` 忽略，**不会推到 GitHub**，
+> 只留在这台机器上；换机器时把本机 `.vscode/` 拷过去，或按本文档重建。
 
 ## 环境要求
 
@@ -10,21 +12,16 @@
 sudo apt install -y build-essential clangd lldb clang-format   # gcc / clangd / lldb / 格式化
 ```
 
-VS Code 扩展（已写入 `.vscode/extensions.json`，打开仓库时会提示安装）：
+VS Code 扩展（本机 `.vscode/extensions.json` 里已列为推荐，打开仓库时会提示安装）：
 
 - [clangd](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd) —— 补全、跳转、诊断
 - [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) —— F5 调试
-- 别同时装微软的 C/C++（cpptools）：它和 clangd 会抢语言服务，仓库已把它列入不推荐扩展。
+- 别同时装微软的 C/C++（cpptools）：它和 clangd 会抢语言服务。
 
 ## 目录结构
 
 ```
 c-homework/
-├── .vscode/                 # 编辑器配置都在这里
-│   ├── settings.json        #   clangd 参数、缩进编码、clangd 作为 c 的格式化器
-│   ├── tasks.json           #   Ctrl+Shift+B 编译当前文件 / 编译全部 / 新建作业
-│   ├── launch.json          #   F5 调试（CodeLLDB / lldb）
-│   └── extensions.json      #   推荐 clangd + CodeLLDB
 ├── programs/                # 所有作业，一层平铺
 │   └── equation.c
 ├── templates/main.c         # 新建作业的模板
@@ -32,7 +29,12 @@ c-homework/
 ├── tools/check-config.py    # 配置自检
 ├── .clang-format            # 格式化风格
 ├── Makefile
-└── build/                   # 编译产物（gitignore）
+├── build/                   # 编译产物（gitignore）
+└── .vscode/                 # 本机编辑器/运行配置（gitignore，不进仓库）
+    ├── settings.json        #   clangd 参数、缩进编码
+    ├── tasks.json           #   Ctrl+Shift+B 编译当前文件 / 编译全部 / 新建作业
+    ├── launch.json          #   F5 调试（CodeLLDB / lldb）
+    └── extensions.json      #   推荐 clangd + CodeLLDB
 ```
 
 ## 日常使用

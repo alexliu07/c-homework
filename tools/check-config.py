@@ -46,6 +46,12 @@ def makefile_var(name: str) -> list[str]:
 
 
 def main() -> int:
+    if not VSCODE.is_dir():
+        notes.append(".vscode/ 不在仓库里（已被 .gitignore 忽略，只保留在本机）——换机器时把本机 .vscode/ 拷过去")
+        if PROGRAMS.is_dir():
+            srcs = sorted(p.name for p in PROGRAMS.glob("*.c"))
+            print(f"programs/ 下作业文件: {', '.join(srcs) if srcs else '（无）'}")
+        return report()
     tasks_cfg = load(VSCODE / "tasks.json")
     launch_cfg = load(VSCODE / "launch.json")
     settings = load(VSCODE / "settings.json")
@@ -165,7 +171,8 @@ def main() -> int:
         if p.parent != PROGRAMS and "templates" not in p.parts and "build" not in p.parts
     ]
     if stray:
-        notes.append(f"发现不在 programs/ 下的 .c: {stray}")
+        head = ", ".join(stray[:3]) + (f" 等 {len(stray)} 个" if len(stray) > 3 else "")
+        notes.append(f"发现不在 programs/ 下的 .c（不会被 make 编译）: {head}")
 
     for must in ("README.md", "Makefile", "templates/main.c", "newhw.sh", ".clang-format", "tools/check-config.py"):
         if not (ROOT / must).exists():

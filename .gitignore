@@ -12,9 +12,8 @@ build/
 .cache/
 compile_commands.json
 
-# VS Code 缓存
-.vscode/ipch/
-.vscode/*.log
+# VS Code 编辑器 / 运行配置（本机私有，不进仓库）
+.vscode/
 
 # 系统 / 编辑器杂项
 .DS_Store
